@@ -6,8 +6,6 @@ export function async(handler) {
             await handler(req, res);
         }
         catch(ex) {
-            // console.log(ex);
-            // res.status(500).send(`Somthing Failed ${ex.message}`);
             next(ex);
         }
     });

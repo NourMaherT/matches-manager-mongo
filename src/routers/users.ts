@@ -23,18 +23,19 @@ router.get('/me', auth, async(async (req, res) => {
     res.send(user);
 }));
 
-router.post("/register",[auth, admin, validate(validateUser)], async(async function(req: Request, res: Response) {
+router.post("/register", [auth, admin, validate(validateUser)], async(async function(req: Request, res: Response) {
     let user = await User.findOne({ username: req.body.username });
-    if(user) return res.status(400).send('User is alresdy existed!');
+    if(user) return res.status(400).send('Username is alresdy existed!');
 
     user = new User(_.pick(req.body, ['username', 'password', 'isAdmin']));
     
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
 
-    const token = user.generateAuthToken();
+    // const token = user.generateAuthToken();
     await user.save();
-    res.header('x-auth-token', token).send(_.pick(user, ['_id', 'username', 'password']));
+    // res.header('x-auth-token', token).send(_.pick(user, ['_id', 'username', 'password']));
+    res.status(200).send(_.pick(user, ['_id', 'username', 'password']));
 }));
 
 router.post("/login", validate(validateUser), async(async function(req: Request, res: Response) {
@@ -45,7 +46,8 @@ router.post("/login", validate(validateUser), async(async function(req: Request,
     if(!valid) return res.status(400).send('Invalid username or password.');
 
     const token = user.generateAuthToken();
-    res.send(token);    
+    // res.send(token); 
+    res.header('x-auth-token', token).send(token);   
 
 }));
 

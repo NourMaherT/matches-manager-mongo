@@ -2,7 +2,11 @@ import * as config from 'config';
 import * as mongoose from 'mongoose';
 import * as logger from 'morgan';
 import * as express from 'express';
-// import 'express-async-errors';
+import * as winston from 'winston';
+import { createLogger, transports } from 'winston';
+import * as fs from 'fs';
+import * as http from 'http';
+import * as https from 'https';
 
 import {userRouter} from './routers/users';
 import {positionRouter} from './routers/positions';
@@ -11,6 +15,34 @@ import {matchRouter} from './routers/matches';
 import {matchDetailRouter} from './routers/matchesDetailes';
 import {error} from './middleware/error';
 
+
+if(!config.get('jwt')) {
+  console.error('FATAL ERROR: set a value to jwt variable.');
+  process.exit(1);
+}
+
+/**
+ * Logger setup
+ */
+const fileLogger = createLogger({
+  transports: [
+    new transports.File({
+      filename: 'logs/combined.log',
+      level: 'info'
+    }),
+    new transports.File({
+      filename: 'logs/errors.log',
+      level: 'error'
+    })
+  ],
+  exceptionHandlers: [
+    new transports.File({ filename: 'logs/exceptions.log' })
+  ],
+  rejectionHandlers: [
+    new transports.File({ filename: 'logs/rejections.log' })
+  ]
+});
+winston.add(fileLogger);
 
 const app = express();
 app.use(express.json());
@@ -26,10 +58,29 @@ app.use(error);
 
 mongoose.connect('mongodb://localhost/matches')
   .then(() => {
-    console.log("Connected to the database...");
+    winston.info("Connected to the database...");
 });
 
+/**
+ * Http and Https setup
+ */
+const privateKey  = fs.readFileSync('sslcert/selfsigned.key', 'utf8');
+const certificate = fs.readFileSync('sslcert/selfsigned.crt', 'utf8');
+const credentials = {key: privateKey, cert: certificate};
+
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
-    console.log(`Listening on port ${port}...`);
+const secPort = process.env.PORT || 3443;
+
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer(credentials, app);
+
+httpServer.listen(port, () => {
+  winston.info(`Listening on port ${port}...`);
 });
+httpsServer.listen(secPort, () => {
+  winston.info(`Listening on port ${secPort}...`);
+});
+
+// app.listen(port, () => {
+//     winston.info(`Listening on port ${port}...`);
+// });

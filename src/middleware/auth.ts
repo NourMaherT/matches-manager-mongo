@@ -1,4 +1,5 @@
 import * as jwt from 'jsonwebtoken';
+import * as config from 'config';
 import {Request, Response, NextFunction} from "express";
 
 export function auth(req: Request, res: Response, next: NextFunction) {
@@ -6,7 +7,7 @@ export function auth(req: Request, res: Response, next: NextFunction) {
     if(!token) return res.status(401).send('Not authenticated.');
 
     try{
-        const decoded = jwt.verify(token ,'1234');
+        const decoded = jwt.verify(token , config.get('jwt'));
         req.userId = decoded._id;
         req.isAdmin = decoded.isAdmin;
         next();
