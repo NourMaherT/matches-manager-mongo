@@ -8,6 +8,7 @@ import {userRouter} from './routers/users';
 import {positionRouter} from './routers/positions';
 import {playerRouter} from './routers/players';
 import {matchRouter} from './routers/matches';
+import {matchDetailRouter} from './routers/matchesDetailes';
 import {error} from './middleware/error';
 
 
@@ -20,6 +21,7 @@ app.use('/api/users', userRouter);
 app.use('/api/positions', positionRouter);
 app.use('/api/players', playerRouter);
 app.use('/api/matches', matchRouter);
+app.use('/api/matchesDetailes', matchDetailRouter);
 app.use(error);
 
 mongoose.connect('mongodb://localhost/matches')

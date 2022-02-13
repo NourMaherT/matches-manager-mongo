@@ -21,6 +21,6 @@ export function validatePlayer(player) {
     const schema = Joi.object({
         name: Joi.string().min(5).max(50).required(),
         positionId: JoiObject.objectId().required()
-    })
+    });
     return schema.validate(player)
 }

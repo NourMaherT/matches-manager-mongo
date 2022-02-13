@@ -27,6 +27,7 @@ export function validateMatch(match) {
         team1: Joi.string().min(5).max(50).required(),
         team2: Joi.string().min(5).max(50).required(),
         date: Joi.date()
-    })
+    });
     return schema.validate(match)
 }
+
