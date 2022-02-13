@@ -3,6 +3,7 @@ import * as mongoose from 'mongoose';
 import * as logger from 'morgan';
 import * as express from 'express';
 import * as winston from 'winston';
+import 'winston-mongodb';
 import { createLogger, transports } from 'winston';
 import * as fs from 'fs';
 import * as http from 'http';
@@ -33,7 +34,11 @@ const fileLogger = createLogger({
     new transports.File({
       filename: 'logs/errors.log',
       level: 'error'
-    })
+    }),
+    // new winston.transports.MongoDB({
+    //   db: config.get('db'),
+    //   level: 'info'
+  // })
   ],
   exceptionHandlers: [
     new transports.File({ filename: 'logs/exceptions.log' })
@@ -56,10 +61,9 @@ app.use('/api/matches', matchRouter);
 app.use('/api/matchesDetailes', matchDetailRouter);
 app.use(error);
 
-mongoose.connect('mongodb://localhost/matches')
-  .then(() => {
-    winston.info("Connected to the database...");
-});
+const db = config.get('db');
+mongoose.connect(db)
+  .then(() => { winston.info(`Connected to ${db} ...`); });
 
 /**
  * Http and Https setup

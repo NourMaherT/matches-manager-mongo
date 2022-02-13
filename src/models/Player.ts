@@ -13,6 +13,9 @@ const playerSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Position'
     }
+},
+{
+timestamps: true
 });
 
 export const Player = mongoose.model('Player', playerSchema);

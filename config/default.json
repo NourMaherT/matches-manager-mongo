@@ -1,4 +1,5 @@
 {
     "name": "Matches Manager",
+    "db": "mongodb://localhost/matches",
     "jwt": ""
 }

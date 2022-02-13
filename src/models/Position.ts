@@ -13,12 +13,14 @@ export enum positions {
 const positionSchema = new mongoose.Schema({
     name: {
         type: String,
-        // enum: positions,
         minlength: 5,
         maxlength: 50,
         unique: true,
         required: true
     }
+},
+{
+timestamps: true
 });
 
 export const Position = mongoose.model('Position', positionSchema);

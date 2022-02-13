@@ -28,6 +28,15 @@ router.get("/:id", [validateObjectId, auth], async(async function(req: Request, 
 
 
 router.post("/", [auth, admin, validate(validateMatch)], async(async function(req: Request, res: Response) {
+    
+    // Avoid Duplication
+    const oldMatch = await Match.find({
+        team1: req.body.team1,
+        team2: req.body.team2,
+        date: req.body.date
+    });
+    if(oldMatch) return res.status(400).send('Duplication Error.');
+
     const match = new Match(_.pick(req.body, ['team1', 'team2', 'date']));
     
     await match.save();

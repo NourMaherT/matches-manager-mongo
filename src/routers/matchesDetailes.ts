@@ -100,6 +100,15 @@ router.post("/", [auth, admin, validate(validateMatchDatailes)], async(async fun
     const position = await Position.findById(req.body.positionId);
     if(!position) return res.status(404).send('There is no position with the given id.');
 
+    // Avoid Duplication
+    const oldRecord = await MatchDetail.find({
+        match: req.body.matchId,
+        player: req.body.playerId,
+        position: req.body.positionId,
+        changeTime: req.body.changeTime
+    });
+    if(oldRecord) return res.status(400).send('Duplication Error.');
+
     const record = new MatchDetail({
         match: req.body.matchId,
         player: req.body.playerId,

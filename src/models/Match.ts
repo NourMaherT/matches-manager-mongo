@@ -18,6 +18,9 @@ const matchSchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     },
+},
+{
+timestamps: true
 });
 
 export const Match = mongoose.model('Match', matchSchema);

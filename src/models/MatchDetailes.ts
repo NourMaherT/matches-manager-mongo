@@ -21,6 +21,9 @@ const matchDetailesSchema = new mongoose.Schema({
         max: 90,
         default: 0
     }
+},
+{
+timestamps: true
 });
 
 export const MatchDetail = mongoose.model('MatchDetail', matchDetailesSchema);
