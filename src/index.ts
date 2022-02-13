@@ -6,6 +6,7 @@ import * as express from 'express';
 
 
 import {userRouter} from './routers/users';
+import {positionRouter} from './routers/positions';
 import {error} from './middleware/error';
 
 
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(logger('dev'));
 
 app.use('/api/users', userRouter);
+app.use('/api/positions', positionRouter);
 app.use(error);
 
 mongoose.connect('mongodb://localhost/matches')

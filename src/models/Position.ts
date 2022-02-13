@@ -14,7 +14,7 @@ export enum positions {
 const positionSchema = new mongoose.Schema({
     name: {
         type: String,
-        enum: positions,
+        // enum: positions,
         minlength: 5,
         maxlength: 50,
         unique: true,
