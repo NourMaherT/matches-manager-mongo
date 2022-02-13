@@ -1,5 +1,4 @@
 import * as Joi from 'joi';
-import * as jwt from 'jsonwebtoken';
 import * as mongoose from 'mongoose';
 
 export enum positions {

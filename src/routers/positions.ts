@@ -38,7 +38,7 @@ router.post("/", [auth, admin, validate(validatePosition)], async(async function
 }));
 
 router.put("/:id", [validateObjectId, validate(validatePosition), auth, admin], async(async function(req: Request, res: Response) {
-    let position = await Position.findByIdAndUpdate(
+    const position = await Position.findByIdAndUpdate(
                                                     req.params.id,
                                                     {$set: { 
                                                         name: req.body.name

@@ -80,6 +80,4 @@ router.delete("/:id", [auth, admin, validateObjectId], async(async function(req:
 }));
 
 
-
-
 export { router as userRouter }

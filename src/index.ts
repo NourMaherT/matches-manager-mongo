@@ -4,9 +4,10 @@ import * as logger from 'morgan';
 import * as express from 'express';
 // import 'express-async-errors';
 
-
 import {userRouter} from './routers/users';
 import {positionRouter} from './routers/positions';
+import {playerRouter} from './routers/players';
+import {matchRouter} from './routers/matches';
 import {error} from './middleware/error';
 
 
@@ -17,6 +18,8 @@ app.use(logger('dev'));
 
 app.use('/api/users', userRouter);
 app.use('/api/positions', positionRouter);
+app.use('/api/players', playerRouter);
+app.use('/api/matches', matchRouter);
 app.use(error);
 
 mongoose.connect('mongodb://localhost/matches')
