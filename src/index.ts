@@ -35,10 +35,14 @@ const fileLogger = createLogger({
       filename: 'logs/errors.log',
       level: 'error'
     }),
-    // new winston.transports.MongoDB({
-    //   db: config.get('db'),
-    //   level: 'info'
-  // })
+    new transports.MongoDB({
+      db: config.get('db'),
+      level: 'info',
+      options: {
+        useUnifiedTopology: true
+    },
+    collection: 'server_logs'
+  })
   ],
   exceptionHandlers: [
     new transports.File({ filename: 'logs/exceptions.log' })
@@ -49,6 +53,9 @@ const fileLogger = createLogger({
 });
 winston.add(fileLogger);
 
+/**
+ * Express Pipelines
+ */
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -60,6 +67,10 @@ app.use('/api/players', playerRouter);
 app.use('/api/matches', matchRouter);
 app.use('/api/matchesDetailes', matchDetailRouter);
 app.use(error);
+
+/**
+ * DB setup
+ */
 
 const db = config.get('db');
 mongoose.connect(db)

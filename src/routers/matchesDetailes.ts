@@ -115,7 +115,6 @@ router.post("/", [auth, admin, validate(validateMatchDatailes)], async(async fun
         position: req.body.positionId,
         changeTime: req.body.changeTime
     });
-    
     await record.save();
     res.status(200).send(record);
 }));
