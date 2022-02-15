@@ -75,3 +75,6 @@
 {"level":"info","message":"Listening on port 3000..."}
 {"level":"info","message":"Listening on port 3443..."}
 {"level":"info","message":"Connected to mongodb+srv://user:user@matchesmanager.elo6v.mongodb.net/matchesManager?retryWrites=true&w=majority ..."}
+{"level":"info","message":"Listening on port 3000...."}
+{"level":"info","message":"Listening on port 3443...."}
+{"level":"info","message":"Connected to mongodb+srv://user:user@matchesmanager.elo6v.mongodb.net/matchesManager?retryWrites=true&w=majority ..."}
