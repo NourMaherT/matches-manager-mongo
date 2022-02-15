@@ -31,6 +31,6 @@
       "winston-mongodb": "^5.0.7"
    },
    "scripts": {
-      "start": "ts-node src/index.ts"
+      "start": "ts-node src/index.ts --disable-extensions"
    }
 }
