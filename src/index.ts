@@ -21,7 +21,7 @@ import {error} from './middleware/error';
 
 if(!config.get('jwt')) {
   console.error('FATAL ERROR: set a value to jwt variable.');
-  process.exit(1);
+  process.exit(2);
 }
 
 /**
