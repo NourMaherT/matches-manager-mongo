@@ -3,6 +3,8 @@ import * as mongoose from 'mongoose';
 import * as logger from 'morgan';
 import * as express from 'express';
 import * as winston from 'winston';
+import helmet from 'helmet';
+import * as compression from 'compression';
 import 'winston-mongodb';
 import { createLogger, transports } from 'winston';
 import * as fs from 'fs';
@@ -27,6 +29,7 @@ if(!config.get('jwt')) {
  */
 const fileLogger = createLogger({
   transports: [
+    new transports.Console(),
     new transports.File({
       filename: 'logs/combined.log',
       level: 'info'
@@ -35,14 +38,14 @@ const fileLogger = createLogger({
       filename: 'logs/errors.log',
       level: 'error'
     }),
-    new transports.MongoDB({
-      db: config.get('db'),
-      level: 'info',
-      options: {
-        useUnifiedTopology: true
-    },
-    collection: 'server_logs'
-  })
+  //   new transports.MongoDB({
+  //     db: config.get('db'),
+  //     level: 'info',
+  //     options: {
+  //       useUnifiedTopology: true
+  //   },
+  //   collection: 'server_logs'
+  // })
   ],
   exceptionHandlers: [
     new transports.File({ filename: 'logs/exceptions.log' })
@@ -59,20 +62,22 @@ winston.add(fileLogger);
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(helmet());
+app.use(compression());
 app.use(logger('dev'));
 
 app.use('/api/users', userRouter);
 app.use('/api/positions', positionRouter);
 app.use('/api/players', playerRouter);
 app.use('/api/matches', matchRouter);
-app.use('/api/matchesDetailes', matchDetailRouter);
+app.use('/api/matchDetailes', matchDetailRouter);
 app.use(error);
 
 /**
  * DB setup
  */
-
-const db = config.get('db');
+// const db = 'mongodb://localhost/matches';
+const db = 'mongodb+srv://user:user@matchesmanager.elo6v.mongodb.net/matchesManager?retryWrites=true&w=majority';
 mongoose.connect(db)
   .then(() => { winston.info(`Connected to ${db} ...`); });
 
@@ -95,7 +100,3 @@ httpServer.listen(port, () => {
 httpsServer.listen(secPort, () => {
   winston.info(`Listening on port ${secPort}...`);
 });
-
-// app.listen(port, () => {
-//     winston.info(`Listening on port ${port}...`);
-// });

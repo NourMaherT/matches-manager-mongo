@@ -32,9 +32,7 @@ router.post("/register", [auth, admin, validate(validateUser)], async(async func
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
 
-    // const token = user.generateAuthToken();
     await user.save();
-    // res.header('x-auth-token', token).send(_.pick(user, ['_id', 'username', 'password']));
     res.status(200).send(_.pick(user, ['_id', 'username', 'password']));
 }));
 
@@ -46,7 +44,6 @@ router.post("/login", validate(validateUser), async(async function(req: Request,
     if(!valid) return res.status(400).send('Invalid username or password.');
 
     const token = user.generateAuthToken();
-    // res.send(token); 
     res.header('x-auth-token', token).send(token);   
 
 }));

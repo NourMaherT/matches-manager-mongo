@@ -35,7 +35,7 @@ router.post("/", [auth, admin, validate(validatePlayer)], async(async function(r
     if(!position) return res.status(404).send('There is no position with the given id.')
 
     // Avoid Duplication
-    const oldPlayer = await Player.find({
+    const oldPlayer = await Player.findOne({
         name: req.body.name,
         position: req.body.positionId
     });

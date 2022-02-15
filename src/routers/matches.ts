@@ -1,6 +1,7 @@
 import * as express from "express";
 import * as mongoose from 'mongoose';
 import * as _ from 'lodash';
+// import {parseISO} from 'date-fns';
 import {Request, Response} from "express";
 import {Match, validateMatch} from "../models/Match";
 import {auth} from '../middleware/auth';
@@ -30,10 +31,10 @@ router.get("/:id", [validateObjectId, auth], async(async function(req: Request, 
 router.post("/", [auth, admin, validate(validateMatch)], async(async function(req: Request, res: Response) {
     
     // Avoid Duplication
-    const oldMatch = await Match.find({
+    const oldMatch = await Match.findOne({
         team1: req.body.team1,
         team2: req.body.team2,
-        date: req.body.date
+        date: Date.now() 
     });
     if(oldMatch) return res.status(400).send('Duplication Error.');
 

@@ -1,5 +1,5 @@
 {
     "name": "Matches Manager",
-    "db": "mongodb://localhost/matches",
+    "db": "mongodb+srv://user:user@matchesmanager.elo6v.mongodb.net/matchesManager?retryWrites=true&w=majority",
     "jwt": ""
 }

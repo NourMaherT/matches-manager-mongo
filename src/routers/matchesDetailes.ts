@@ -48,7 +48,8 @@ router.get("/match/:matchId", auth, async(async function(req: Request, res: Resp
     let players = records.map(record => {
             return record.player.name;
     });
-    res.status(200).send(players);
+    let uniquePlayers = [...new Set(players)]
+    res.status(200).send(uniquePlayers);
 
 }));
 
@@ -63,7 +64,15 @@ router.get("/player/:playerId", auth, async(async function(req: Request, res: Re
     const matches = records.map(record => {
             return record.match;
     });
-    res.status(200).send(matches);
+    const ids = [...new Set(matches.map(v => v.id))];
+    let uniqueMatches = [];
+    ids.forEach(async function(id) {
+        const temp = await Match.findById(id);
+        uniqueMatches.push(temp);
+    });
+    setTimeout(() => {
+        res.status(200).send(uniqueMatches);
+    }, 1000);
 
 }));
 
@@ -101,7 +110,7 @@ router.post("/", [auth, admin, validate(validateMatchDatailes)], async(async fun
     if(!position) return res.status(404).send('There is no position with the given id.');
 
     // Avoid Duplication
-    const oldRecord = await MatchDetail.find({
+    const oldRecord = await MatchDetail.findOne({
         match: req.body.matchId,
         player: req.body.playerId,
         position: req.body.positionId,
