@@ -37,15 +37,7 @@ const fileLogger = createLogger({
     new transports.File({
       filename: 'logs/errors.log',
       level: 'error'
-    }),
-  //   new transports.MongoDB({
-  //     db: config.get('db'),
-  //     level: 'info',
-  //     options: {
-  //       useUnifiedTopology: true
-  //   },
-  //   collection: 'server_logs'
-  // })
+    })
   ],
   exceptionHandlers: [
     new transports.File({ filename: 'logs/exceptions.log' })
@@ -55,6 +47,8 @@ const fileLogger = createLogger({
   ]
 });
 winston.add(fileLogger);
+
+
 
 /**
  * Express Pipelines
@@ -76,8 +70,7 @@ app.use(error);
 /**
  * DB setup
  */
-// const db = 'mongodb://localhost/matches';
-const db = 'mongodb+srv://user:user@matchesmanager.elo6v.mongodb.net/matchesManager?retryWrites=true&w=majority';
+const db = config.get('db');
 mongoose.connect(db)
   .then(() => { winston.info(`Connected to ${db} ...`); });
 
@@ -95,8 +88,8 @@ const httpServer = http.createServer(app);
 const httpsServer = https.createServer(credentials, app);
 
 httpServer.listen(port, () => {
-  winston.info(`Listening on port ${port}...`);
+  winston.info(`Listening on port ${port}....`);
 });
 httpsServer.listen(secPort, () => {
-  winston.info(`Listening on port ${secPort}...`);
+  winston.info(`Listening on port ${secPort}....`);
 });
