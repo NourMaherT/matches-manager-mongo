@@ -9,7 +9,7 @@ const playerSchema = new mongoose.Schema({
         maxlength: 50,
         required: true
     },
-    position: {
+    position: { //default one in general
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Position'
     }
