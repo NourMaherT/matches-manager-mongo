@@ -4,6 +4,7 @@
 
 ### 🔖 Table Of Contents
 
+- ⚠️ [Important](#imortant)
 - 🤔 [How To Use](#how-to-use)
 - 😕 [What Are The APIs](#what-are-the-apis)
 - 🚀 [Technologies](#technologies)
@@ -14,6 +15,12 @@
 - 🤗 [Contributors](#contributors)
 - 👤 [Author](#author)
 - 🔏 [License](#license)
+
+---
+<h2 id="how-to-use">⚠️ Important </h2>
+- The positions property in the player is his default position in general, but the position in matchDetail is the changed one for particular player in a particular match that comes with changeTime.
+
+[Back To The Top](#title)
 
 ---
 
